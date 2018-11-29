@@ -1,0 +1,7 @@
+.idea/*
+/.project
+/.pydevproject
+*.iml
+*.xml
+__pycache__/
+/venv
