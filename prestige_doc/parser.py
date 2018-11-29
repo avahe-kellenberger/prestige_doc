@@ -1,8 +1,22 @@
 import re
 
 
-def map_documentation(raw_source):
-    """Reads the source file and maps the class and function names to their documentation.
+def map_class_functions(raw_source, class_name):
+    """Maps the class name to its functions.
+
+    Parameters
+    ----------
+    raw_source: str
+        The raw text of a *.py file.
+    class_name: str
+        The name of the class to map.
+    """
+    # TODO:
+    return ""
+
+
+def map_class_docs(raw_source):
+    """Reads the source file and maps the class names to their documentation.
 
     Parameters
     ----------
@@ -11,10 +25,13 @@ def map_documentation(raw_source):
 
     Returns
     -------
-    dict: A dictionary of the class and function names to their documentation.
+    dict: A dictionary of each class to a map of its functions' names to their documentation,
     """
-    class_names = find_class_names(raw_source)
-    doc_matcher = 'class Connection\(.*?\):[^"]*?"""[^a-zA-Z]*([^"]*)"""'
+    class_docs = dict()
+    for class_name in find_class_names(raw_source):
+        doc = find_class_doc(raw_source, class_name)
+        class_docs[class_name] = doc if doc else ''
+    return class_docs
 
 
 def find_class_names(raw_source):
