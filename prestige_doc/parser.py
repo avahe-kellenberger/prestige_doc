@@ -64,7 +64,5 @@ def find_class_doc(raw_source, class_name):
     str: The documentation associated with the class name.
     """
     match = re.search(re.compile(f'class {class_name}\(.*?\):[^def]*?"""\n([^"]*)"""'), raw_source)
-    if match:
-        return match.group(1).rstrip()
-    return None
+    return match.group(1).rstrip() if match else None
 
