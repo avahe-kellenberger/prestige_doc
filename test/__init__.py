@@ -7,4 +7,5 @@ if __name__ == "__main__":
     text = urllib.request.urlopen(url).read().decode('utf-8')
 
     test_module = Module(text)
-    print("\n\n".join(c.source_code for c in test_module.classes))
+    for c in test_module.classes:
+        print(f'class {c.name}: \n{c.doc}\n')

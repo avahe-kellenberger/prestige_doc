@@ -7,7 +7,7 @@ class Class(object):
     Represents a python class, which allows access to its documentation and functions.
     """
 
-    def __init__(self, source_code):
+    def __init__(self, name, source_code):
         """
         Parses the source code of the given class and breaks it down into documentation and functions.
 
@@ -16,7 +16,27 @@ class Class(object):
         source_code: str
             The raw text of the class.
         """
+        self.__name = name
+        self.__doc = parser.find_class_doc(source_code)
         self.__source_code = source_code
+
+    @property
+    def name(self):
+        """
+        Returns
+        -------
+        str: The name of the class.
+        """
+        return self.__name
+
+    @property
+    def doc(self):
+        """
+        Returns
+        -------
+        str: The documentation of the class.
+        """
+        return self.__doc
 
     @property
     def source_code(self):
@@ -44,7 +64,7 @@ class Module(object):
             The raw text of the module.
         """
         self.__source_code = source_code
-        self.__classes = tuple(Class(source) for source in parser.find_classes(source_code).values())
+        self.__classes = tuple(Class(i[0], i[1]) for i in parser.find_classes(source_code).items())
 
     @property
     def source_code(self):
