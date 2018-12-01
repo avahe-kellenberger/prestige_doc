@@ -8,4 +8,6 @@ if __name__ == "__main__":
 
     test_module = Module(text)
     for c in test_module.classes:
-        print(f'class {c.name}: \n{c.doc}\n')
+        print(f'class {c.name}: \n\n{c.doc}\n\nfunctions:\n')
+        print("\n".join(f.name for f in c.functions))
+        print("\n")
