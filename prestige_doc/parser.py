@@ -74,8 +74,8 @@ def find_function_doc(function_source):
     -------
     str: The documentation of the function.
     """
-    match = re.search('(def(.|\n)+?("""(.|\n)*?""")(.|\n)+?)(?=def|class|\Z)', function_source)
-    return match.group(3).rstrip() if match else ''
+    match = re.search('def \w+?\(.*?\):\s+?"""((.|\s)*?)"""', function_source)
+    return match.group(1).lstrip().rstrip() if match else ''
 
 
 def find_functions(source_code):

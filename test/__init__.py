@@ -9,5 +9,6 @@ if __name__ == "__main__":
     test_module = Module(text)
     for c in test_module.classes:
         print(f'class {c.name}: \n\n{c.doc}\n\nfunctions:\n')
-        print("\n".join(f.name for f in c.functions))
+        for func in c.functions:
+            print(f'def {func.name}(): \n\n{func.doc}\n\n')
         print("\n")
