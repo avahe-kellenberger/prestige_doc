@@ -115,7 +115,7 @@ def find_function_name(function_source):
 
 def find_function_params(documentation):
     """
-    Parses the documentation of the function to find the parameters and return types.
+    Parses the documentation of the function to find the parameters, their return types, and descriptions.
     NOTE: This assumes the use of my documentation format.
 
     Parameters
@@ -125,7 +125,13 @@ def find_function_params(documentation):
 
     Returns
     -------
-    dict: The parameters of the function as `parameter[name] = type`.
+    dict: The parameters of the function as `parameter[name: str] = tuple(type: str, description: str)`.
     """
-    # TODO:
-    return dict()
+    params = dict()
+    match = re.search('(Parameters\s+?-+\s+)((.|\s)+?)(\Z|((Returns|Throws)\s+?(-+?)))', documentation)
+    param_block = match.group(2).lstrip().rstrip() if match else None
+
+    if param_block:
+        for match in re.finditer('(\w+?):\s*(.+?)\n\s+?((.|\s)+?)(?=(\w+?):|\Z)', param_block):
+            params[match.group(1)] = (match.group(2), match.group(3).lstrip().rstrip())
+    return params

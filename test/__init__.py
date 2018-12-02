@@ -10,5 +10,6 @@ if __name__ == "__main__":
     for c in test_module.classes:
         print(f'class {c.name}: \n\n{c.doc}\n\nfunctions:\n')
         for func in c.functions:
-            print(f'def {func.name}(): \n\n{func.doc}\n\n')
-        print("\n")
+            print(f'def {func.name}(): \n')
+            for param in func.parameters.items():
+                print(f'\t{param[0]}: {param[1][0]}\n\t{param[1][1]}\n')

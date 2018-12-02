@@ -17,10 +17,9 @@ class Function(object):
             The source code of the function.
         """
         self.__source_code = source_code
-        # TODO: Maybe have this passed in, like the Class object.
         self.__name = parser.find_function_name(source_code)
         self.__doc = parser.find_function_doc(source_code)
-        # self.__parameters = parser.find_function_params(self.__doc)
+        self.__parameters = parser.find_function_params(self.__doc)
 
     @property
     def name(self):
@@ -54,10 +53,9 @@ class Function(object):
         """
         Returns
         -------
-        dict: The parameters of the function as `parameter[name] = type`.
+        dict: The parameters of the function as `parameter[name: str] = (type: str, description: str)`.
         """
-        return ""
-        # return self.__parameters
+        return self.__parameters
 
 
 class Class(object):
