@@ -91,7 +91,8 @@ def find_functions(source_code):
     -------
     tuple(str): The source code of each function found.
     """
-    return [m.group(1).lstrip().rstrip() for m in re.finditer('(def(.|\n)+?("""(.|\n)*?""")(.|\n)+?)(?=def|class|\Z)', source_code)]
+    return [m.group(1).lstrip().rstrip()
+            for m in re.finditer('(def(.|\n)+?("""(.|\n)*?""")(.|\n)+?)(?=def|class|\Z)', source_code)]
 
 
 def find_function_name(function_source):
