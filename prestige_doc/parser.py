@@ -19,7 +19,7 @@ def find_classes(module_source):
     class_dict = dict()
     class_names = find_class_names(module_source)
     if class_names is not None:
-        body_pattern = r'(class %s\((.*?\)):((.|\s)*?))((class [a-zA-Z_][a-zA-Z0-9_]*?\(.*?\):)|\Z)'
+        body_pattern = r'(class %s\(?(.*?\)?):((.|\s)*?))((class [a-zA-Z_][a-zA-Z0-9_]*?\(.*?\):)|\Z)'
         for class_name in class_names:
             new_pattern = body_pattern % class_name
             match = re.search(new_pattern, module_source)
@@ -41,7 +41,7 @@ def find_class_names(module_source):
     -------
     list: A list of class names in the source.
     """
-    return re.findall('class ([a-zA-Z_][a-zA-Z0-9_]*?)\(.*?\):', module_source)
+    return re.findall('class (\w*)\(?.*?\)?:', module_source)
 
 
 def find_class_doc(class_source):
@@ -57,7 +57,7 @@ def find_class_doc(class_source):
     -------
     str: The documentation of the class.
     """
-    match = re.search('class [a-zA-z0-9_]*?\(.*?\):[^def]*?"""\n([^"]*)"""', class_source)
+    match = re.search('class \w+?\(?.*?\)?:[^def]*?"""([^"]*)"""', class_source)
     return match.group(1).rstrip() if match else ''
 
 
