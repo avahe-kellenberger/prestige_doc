@@ -41,7 +41,7 @@ def find_class_names(module_source):
     -------
     list: A list of class names in the source.
     """
-    return re.findall('class (\w*)\(?.*?\)?:', module_source)
+    return re.findall(r'class (\w*)\(?.*?\)?:', module_source)
 
 
 def find_class_doc(class_source):
@@ -57,7 +57,7 @@ def find_class_doc(class_source):
     -------
     str: The documentation of the class.
     """
-    match = re.search('class \w+?\(?.*?\)?:[^def]*?"""([^"]*)"""', class_source)
+    match = re.search(r'class \w+?\(?.*?\)?:[^def]*?"""([^"]*)"""', class_source)
     return match.group(1).rstrip() if match else ''
 
 
@@ -74,7 +74,7 @@ def find_function_doc(function_source):
     -------
     str: The documentation of the function.
     """
-    match = re.search('def \w+?\(.*?\):\s+?"""((.|\s)*?)"""', function_source)
+    match = re.search(r'def \w+?\(.*?\):\s+?"""((.|\s)*?)"""', function_source)
     return match.group(1).lstrip().rstrip() if match else ''
 
 
@@ -91,9 +91,9 @@ def find_functions(source_code):
     -------
     tuple(str): The source code of each function found.
     """
-    regex = 'def (.|\n)+?("""(.|\n)*?""")(.|\n)+?(?=^\s*?def |^\s*?class |^\s*?@\w+?\s+?|\Z)'
-    return [m.group(0).lstrip().rstrip()
-            for m in re.finditer(re.compile(regex, re.RegexFlag.MULTILINE), source_code)]
+    regex = r'def (.|\n)+?("""(.|\n)*?""")(.|\n)+?(?=^\s*?def |^\s*?class |^\s*?@\w+?\s+?|\Z)'
+    return tuple(m.group(0).lstrip().rstrip()
+                 for m in re.finditer(re.compile(regex, re.RegexFlag.MULTILINE), source_code))
 
 
 def find_function_name(function_source):
@@ -110,7 +110,7 @@ def find_function_name(function_source):
     str: The name of the function.
 
     """
-    match = re.search('def (\w+?)\(.*?\):', function_source)
+    match = re.search(r'def (\w+?)\(.*?\):', function_source)
     return match.group(1).rstrip() if match else ''
 
 
@@ -129,10 +129,28 @@ def find_function_params(documentation):
     dict: The parameters of the function as `parameter[name: str] = tuple(type: str, description: str)`.
     """
     params = dict()
-    match = re.search('(Parameters\s+?-+\s+)((.|\s)+?)(\Z|((Returns|Throws)\s+?(-+?)))', documentation)
+    match = re.search(r'(Parameters\s+?-+\s+)((.|\s)+?)(\Z|((Returns|Throws)\s+?(-+?)))', documentation)
     param_block = match.group(2).lstrip().rstrip() if match else None
 
     if param_block:
-        for match in re.finditer('(\w+?):\s*(.+?)\n\s+?((.|\s)+?)(?=(\w+?):|\Z)', param_block):
+        for match in re.finditer(r'(\w+?):\s*(.+?)\n\s+?((.|\s)+?)(?=(\w+?):|\Z)', param_block):
             params[match.group(1)] = (match.group(2), match.group(3).lstrip().rstrip())
     return params
+
+
+def find_assigned_vars(source):
+    """
+    Finds the names of variables that have been assigned a value in the code.
+
+    Parameters
+    ----------
+    source: str
+        The source code.
+
+    Returns
+    -------
+    tuple(str): The variables names which have been assigned values.
+    """
+    # TODO:
+    # ^[ |\t]*([^\t ]*)[\t ]*?=.*$
+    raise NotImplementedError()
